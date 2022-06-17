@@ -73,7 +73,7 @@ class Player extends Obj {
         this.attrib = {
             atk : 1,
             def : 0,
-            life: 9
+            life: 10
         }
         this.box = {
             pos : {
@@ -278,6 +278,8 @@ class Shot extends Obj {
 const enemyList = []
 const enemyMax  = 5
 
+const hud = new SpriteFont (Color.WHITE)
+
 const player = new Player ({
     width : 48,
     height: 48,
@@ -342,16 +344,17 @@ function fundo () {
 }
 
 function isGameOver () {
-    if (player.attrib.life < 0) {
-        setTimeout (() => { cancelAnimationFrame (currentScene) }, 1)
-        ctx.save ()
-        ctx.font = 'bold 32px Roboto Mono'
+    if (player.attrib.life <= 0) {
         let str =  '=[ GAME OVER ]='
-        ctx.fillStyle = '#000'
-        ctx.fillText (str, 1 + WIDTH / 2 - (str.length * 32) / 3, 1 + HEIGHT/2 + 16)
-        ctx.fillStyle = '#fff'
-        ctx.fillText (str, WIDTH / 2 - (str.length * 32) / 3, HEIGHT/2 + 16)
-        ctx.restore ()
+        // ctx.save ()
+        // ctx.font = 'bold 32px Roboto Mono'
+        // ctx.fillStyle = '#000'
+        // ctx.fillText (str, 1 + WIDTH / 2 - (str.length * 32) / 3, 1 + HEIGHT/2 + 16)
+        // ctx.fillStyle = '#fff'
+        // ctx.fillText (str, WIDTH / 2 - (str.length * 32) / 3, HEIGHT/2 + 16)
+        // ctx.restore ()
+        hud.printText (str, WIDTH/2 - (str.length/2) * 32, HEIGHT / 2 - 32, 32)
+        setTimeout (() => { cancelAnimationFrame (currentScene) }, 1)
     }
 }
 
@@ -461,30 +464,43 @@ function inputHandler () {
     }
 }
 
+function lifeMeter () {
+    let color = 'rgba(255,'+28 * player.attrib.life +', 0, 0.7)'
+    let x = 8
+    let y = 32
+    let w = 176
+    let h = 16
+    hud.printText ('- ENERGIA -', 8, 8, 16)
+
+    ctx.fillStyle = color;
+    ctx.strokeStyle = '#fff';
+    ctx.strokeRect (x,y, w, h)
+    ctx.fillRect(x+2,y+2,((w-4)/10) * player.attrib.life, h-4)
+}
+
 var currentScene = null
 
 function main () {
     ctx.clearRect (0,0, WIDTH, HEIGHT)
     fundo ()
-    
     inputHandler ()
     spawnEnemy ()
     player.update ()
 
-    ctx.fillStyle = '#fff'
-    ctx.font = 'bold 16px Roboto Mono'
-    ctx.fillText (`player life  => ${player.attrib.life}`, 16, 16)
-    ctx.fillText (`player shots => ${player.shotList.length}/${player.shotMax}`, 16, 32)
-    ctx.fillText (`enemies      => ${enemyList.length}/${enemyMax}`, 830, 16)
+    // hud.printText (`player life  => ${player.attrib.life}`, 16, 16, 16)
+    // hud.printText (`player shots => ${player.shotList.length}/${player.shotMax}`, 16, 32, 16)
+    // hud.printText (`enemies   => ${enemyList.length}/${enemyMax}`, 750, 16, 16)
 
     enemyList.forEach (enemy => {
         enemy.update ()
         let i = enemyList.indexOf (enemy)
-        ctx.fillText (`[${i}] shots => ${enemy.shotList.length}/${enemy.shotMax} | life => ${enemy.attrib.life}`, 750, 16 + (i+1) * 16)
+        // hud.printText (`[${i}] shots => ${enemy.shotList.length}/${enemy.shotMax} | life => ${enemy.attrib.life}`, 558, 16 + (i+1) * 16, 16)
     })
 
+    lifeMeter ()
     currentScene = requestAnimationFrame (main);
     isGameOver ()
 }
 
 main ()
+
