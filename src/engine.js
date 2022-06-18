@@ -65,7 +65,7 @@ class Player extends Obj {
     constructor ({width, height, color, imgSrc = null, attrib, shotMax = 5}) {
         let pos = {
             x : WIDTH/2 - width/2,
-            y : HEIGHT - height
+            y : HEIGHT - height * 1.5
         }
         super ({pos, width, height, color, imgSrc, attrib})
         this.shotList = []
@@ -278,8 +278,6 @@ class Shot extends Obj {
 const enemyList = []
 const enemyMax  = 5
 
-const hud = new SpriteFont (Color.WHITE)
-
 const player = new Player ({
     width : 48,
     height: 48,
@@ -345,21 +343,16 @@ function fundo () {
 
 function isGameOver () {
     if (player.attrib.life <= 0) {
-        let str =  '=[ GAME OVER ]='
-        // ctx.save ()
-        // ctx.font = 'bold 32px Roboto Mono'
-        // ctx.fillStyle = '#000'
-        // ctx.fillText (str, 1 + WIDTH / 2 - (str.length * 32) / 3, 1 + HEIGHT/2 + 16)
-        // ctx.fillStyle = '#fff'
-        // ctx.fillText (str, WIDTH / 2 - (str.length * 32) / 3, HEIGHT/2 + 16)
-        // ctx.restore ()
-        hud.printText (str, WIDTH/2 - (str.length/2) * 32, HEIGHT / 2 - 32, 32)
+        let str =  '-=[ GAME OVER ]=-'
+        printText (str, (WIDTH/2 - (str.length/2) * 32) + 1, (HEIGHT / 2 - 32) + 1, 32, Color.WHITE)
+        printText (str, WIDTH/2 - (str.length/2) * 32, HEIGHT / 2 - 32, 32, Color.RED)
         setTimeout (() => { cancelAnimationFrame (currentScene) }, 1)
     }
 }
 
 function spawnEnemy () {
     let rand = Math.floor (Math.random () * 6)
+    let src;
     switch (rand) {
         case 0 :
             src = 'res/blue.png'
@@ -464,13 +457,14 @@ function inputHandler () {
     }
 }
 
+
 function lifeMeter () {
     let color = 'rgba(255,'+28 * player.attrib.life +', 0, 0.7)'
     let x = 8
     let y = 32
     let w = 176
     let h = 16
-    hud.printText ('- ENERGIA -', 8, 8, 16)
+    printText ('- ENERGIA -', 8, 8, 16, Color.WHITE)
 
     ctx.fillStyle = color;
     ctx.strokeStyle = '#fff';
@@ -479,26 +473,29 @@ function lifeMeter () {
 }
 
 var currentScene = null
-
+var msg = 'Em desenvolvimento'
 function main () {
+    for (color in Color) printText ('',-8,-8,8, Color[color])
     ctx.clearRect (0,0, WIDTH, HEIGHT)
     fundo ()
     inputHandler ()
     spawnEnemy ()
     player.update ()
 
-    // hud.printText (`player life  => ${player.attrib.life}`, 16, 16, 16)
-    // hud.printText (`player shots => ${player.shotList.length}/${player.shotMax}`, 16, 32, 16)
-    // hud.printText (`enemies   => ${enemyList.length}/${enemyMax}`, 750, 16, 16)
+    // printText (`player life  => ${player.attrib.life}`, 16, 16, 16)
+    // printText (`player shots => ${player.shotList.length}/${player.shotMax}`, 16, 32, 16)
+    // printText (`enemies   => ${enemyList.length}/${enemyMax}`, 750, 16, 16)
 
     enemyList.forEach (enemy => {
         enemy.update ()
         let i = enemyList.indexOf (enemy)
-        // hud.printText (`[${i}] shots => ${enemy.shotList.length}/${enemy.shotMax} | life => ${enemy.attrib.life}`, 558, 16 + (i+1) * 16, 16)
+        // printText (`[${i}] shots => ${enemy.shotList.length}/${enemy.shotMax} | life => ${enemy.attrib.life}`, 558, 16 + (i+1) * 16, 16)
     })
 
     lifeMeter ()
     currentScene = requestAnimationFrame (main);
+
+    printText (msg, (WIDTH/2) - (msg.length/2) * 8, HEIGHT - 8, 8, Color.YELLOW)
     isGameOver ()
 }
 
