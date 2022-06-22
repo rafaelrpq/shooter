@@ -1,6 +1,6 @@
 // const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,!?:;+-=[]/\\|<>"
 // const spriteFont = new Image ()
-// spriteFont.src = 'res/spriteFont[white].png'
+// spriteFont.src = '[white].png'
 
 // function printText (txt, x, y, fontSize, color = null) {
 //     txt = txt.toString ()
@@ -48,21 +48,21 @@ const Color = {
     PURPLE: 7
 }
 
-const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,!?:;+-=[]/\\|<>"
-const src = {
-    0 : "res/spriteFont.png",
-    1 : "res/spriteFont[white].png",
-    2 : "res/spriteFont[red].png",
-    3 : "res/spriteFont[green].png",
-    4 : "res/spriteFont[blue].png",
-    5 : "res/spriteFont[yellow].png",
-    6 : "res/spriteFont[orange].png",
-    7 : "res/spriteFont[purple].png",
+const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz.,!?:;+-=[]/\\|<>*%"
+const colors = {
+    0 : "black.png",
+    1 : "white.png",
+    2 : "red.png",
+    3 : "green.png",
+    4 : "blue.png",
+    5 : "yellow.png",
+    6 : "aqua.png",
+    7 : "purple.png",
 }
-function printText (txt, x, y, fontSize, color = Color.BLACK) {
+function printText (txt, x, y, fontSize = 8, color = Color.BLACK, font = 'basic') {
     txt = txt.toString ()
     const image = new Image()
-    image.src = src[color]
+    image.src = 'res/fonts/'+font+'/'+colors[color]
     for (let i in txt) {
         for (let c in chars) {
             if (chars[c] === txt[i]) {

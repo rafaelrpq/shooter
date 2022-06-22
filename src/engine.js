@@ -281,7 +281,7 @@ const enemyMax  = 5
 const player = new Player ({
     width : 48,
     height: 48,
-    imgSrc : 'res/green.png'
+    imgSrc : 'res/ships/green.png'
 })
 
 const bg0a = new Obj ({
@@ -344,8 +344,8 @@ function fundo () {
 function isGameOver () {
     if (player.attrib.life <= 0) {
         let str =  '-=[ GAME OVER ]=-'
-        printText (str, (WIDTH/2 - (str.length/2) * 32) + 1, (HEIGHT / 2 - 32) + 1, 32, Color.WHITE)
-        printText (str, WIDTH/2 - (str.length/2) * 32, HEIGHT / 2 - 32, 32, Color.RED)
+        printText (str, (WIDTH/2 - (str.length/2) * 32) + 1, (HEIGHT / 2 - 32) + 1, 32, Color.WHITE, 'styled')
+        printText (str, WIDTH/2 - (str.length/2) * 32, HEIGHT / 2 - 32, 32, Color.RED, 'styled')
         setTimeout (() => { cancelAnimationFrame (currentScene) }, 1)
     }
 }
@@ -355,22 +355,22 @@ function spawnEnemy () {
     let src;
     switch (rand) {
         case 0 :
-            src = 'res/blue.png'
+            src = 'res/ships/blue.png'
             break
         case 1 :
-            src = 'res/darkgrey.png'
+            src = 'res/ships/darkgrey.png'
             break
         case 2 :
-            src = 'res/metalic.png'
+            src = 'res/ships/metalic.png'
             break
         case 3 :
-            src = 'res/orange.png'
+            src = 'res/ships/orange.png'
             break
         case 4 :
-            src = 'res/purple.png'
+            src = 'res/ships/purple.png'
             break
         case 5 :
-            src = 'res/red.png'
+            src = 'res/ships/red.png'
             break
     }
 
@@ -464,7 +464,7 @@ function lifeMeter () {
     let y = 32
     let w = 176
     let h = 16
-    printText ('- ENERGIA -', 8, 8, 16, Color.WHITE)
+    printText ('- ENERGIA -', 8, 8, 16, Color.WHITE, 'styled')
 
     ctx.fillStyle = color;
     ctx.strokeStyle = '#fff';
@@ -473,14 +473,15 @@ function lifeMeter () {
 }
 
 function score () {
-    printText ('- PONTOS -', WIDTH - 168, 8, 16, Color.WHITE)
-    printText ('0123456789', WIDTH - 168, 24, 16, Color.WHITE)
+    printText ('- PONTOS -', WIDTH - 168, 8, 16, Color.WHITE, 'styled')
+    printText ('0123456789', WIDTH - 168, 24, 16, Color.WHITE, 'styled')
 }
 
 var currentScene = null
-var msg = 'Em desenvolvimento'
+var msg = '*Status do projeto : Em desenvolvimento'
 function main () {
     for (color in Color) printText ('',-8,-8,8, Color[color])
+    for (color in Color) printText ('',-8,-8,8, Color[color], 'styled')
     ctx.clearRect (0,0, WIDTH, HEIGHT)
     fundo ()
     inputHandler ()
@@ -501,7 +502,7 @@ function main () {
     score ()
     currentScene = requestAnimationFrame (main);
 
-    printText (msg, (WIDTH/2) - (msg.length/2) * 8, HEIGHT - 8, 8, Color.YELLOW)
+    printText (msg, (WIDTH/2) - (msg.length/2) * 8, HEIGHT - 8, 8, Color.YELLOW, 'styled')
     isGameOver ()
 }
 
