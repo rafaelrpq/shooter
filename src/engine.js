@@ -472,6 +472,11 @@ function lifeMeter () {
     ctx.fillRect(x+2,y+2,((w-4)/10) * player.attrib.life, h-4)
 }
 
+function score () {
+    printText ('- PONTOS -', WIDTH - 168, 8, 16, Color.WHITE)
+    printText ('0123456789', WIDTH - 168, 24, 16, Color.WHITE)
+}
+
 var currentScene = null
 var msg = 'Em desenvolvimento'
 function main () {
@@ -493,6 +498,7 @@ function main () {
     })
 
     lifeMeter ()
+    score ()
     currentScene = requestAnimationFrame (main);
 
     printText (msg, (WIDTH/2) - (msg.length/2) * 8, HEIGHT - 8, 8, Color.YELLOW)
